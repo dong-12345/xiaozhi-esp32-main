@@ -19,10 +19,12 @@
 #include "lcd_display.h"
 #include <iot_button.h>
 #include "websocket_control_server.h"
+#include "touch_element/touch_button.h"  // 添加触摸按钮头文件
 
 #define TAG "blue_waveshare_lcd_1_46"
 
 extern void InitializeOttoController();
+extern void touch_main(void);  // 声明touch_main函数
 
 // 在waveshare_lcd_1_46类之前添加新的显示类
 class CustomLcdDisplay : public SpiLcdDisplay {
@@ -242,6 +244,7 @@ public:
         InitializeButtons();
         GetBacklight()->RestoreBrightness();
         InitializeOttoController();
+        touch_main();  // 调用touch_main函数
         ws_control_server_ = nullptr;
     }
 

@@ -439,27 +439,6 @@ private:
         }
     }
 
-    void QueueAction(int action_type, int steps, int speed, int direction, int amount) {
-        // 检查手部动作
-        if ((action_type >= ACTION_HANDS_UP && action_type <= ACTION_HAND_WAVE) || 
-            (action_type == ACTION_WINDMILL) || (action_type == ACTION_TAKEOFF) || 
-            (action_type == ACTION_FITNESS) || (action_type == ACTION_GREETING) ||
-            (action_type == ACTION_SHY) || (action_type == ACTION_RADIO_CALISTHENICS) ||
-            (action_type == ACTION_MAGIC_CIRCLE)) {
-            if (!has_hands_) {
-                ESP_LOGW(TAG, "尝试执行手部动作，但机器人没有配置手部舵机");
-                return;
-            }
-        }
-
-        ESP_LOGI(TAG, "动作控制: 类型=%d, 步数=%d, 速度=%d, 方向=%d, 幅度=%d", action_type, steps,
-                 speed, direction, amount);
-
-        OttoActionParams params = {action_type, steps, speed, direction, amount, ""};
-        xQueueSend(action_queue_, &params, portMAX_DELAY);
-        StartActionTaskIfNeeded();
-    }
-
     void QueueServoSequence(const char* servo_sequence_json) {
         if (servo_sequence_json == nullptr) {
             ESP_LOGE(TAG, "序列JSON为空");
@@ -522,6 +501,31 @@ public:
         QueueAction(ACTION_HOME, 1, 1000, 1, 0);  // direction=1表示复位手部
 
         RegisterMcpTools();
+    }
+    
+    QueueHandle_t GetActionQueue() {
+        return action_queue_;
+    }
+    
+    void QueueAction(int action_type, int steps, int speed, int direction, int amount) {
+        // 检查手部动作
+        if ((action_type >= ACTION_HANDS_UP && action_type <= ACTION_HAND_WAVE) || 
+            (action_type == ACTION_WINDMILL) || (action_type == ACTION_TAKEOFF) || 
+            (action_type == ACTION_FITNESS) || (action_type == ACTION_GREETING) ||
+            (action_type == ACTION_SHY) || (action_type == ACTION_RADIO_CALISTHENICS) ||
+            (action_type == ACTION_MAGIC_CIRCLE)) {
+            if (!has_hands_) {
+                ESP_LOGW(TAG, "尝试执行手部动作，但机器人没有配置手部舵机");
+                return;
+            }
+        }
+
+        ESP_LOGI(TAG, "动作控制: 类型=%d, 步数=%d, 速度=%d, 方向=%d, 幅度=%d", action_type, steps,
+                 speed, direction, amount);
+
+        OttoActionParams params = {action_type, steps, speed, direction, amount, ""};
+        xQueueSend(action_queue_, &params, portMAX_DELAY);
+        StartActionTaskIfNeeded();
     }
 
     void RegisterMcpTools() {
@@ -850,4 +854,25 @@ void InitializeOttoController() {
         g_otto_controller = new OttoController();
         ESP_LOGI(TAG, "Otto控制器已初始化并注册MCP工具");
     }
+}
+
+/**
+ * 从外部访问OttoController的QueueAction功能
+ * 用于从其他模块（如触摸按钮）触发机器人动作
+ */
+void QueueOttoAction(int action_type, int steps, int speed, int direction, int amount) {
+    if (g_otto_controller != nullptr) {
+        g_otto_controller->QueueAction(action_type, steps, speed, direction, amount);
+    } else {
+        ESP_LOGW(TAG, "Otto控制器未初始化,无法执行动作");
+    }
+}
+
+/**
+ * 获取OttoController内部的动作队列句柄。
+ * 此函数可用于查询队列状态（如等待消息数量）或进行调试。
+ * @return QueueHandle_t 动作队列的句柄，如果控制器未初始化则返回nullptr。
+ */
+QueueHandle_t get_otto_controller_queue() {
+    return g_otto_controller ? g_otto_controller->GetActionQueue() : nullptr;
 }
