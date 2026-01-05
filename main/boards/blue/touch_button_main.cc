@@ -27,7 +27,7 @@
 
 
 static const char *TAG = "Touch Button";
-#define TOUCH_BUTTON_NUM 3
+#define TOUCH_BUTTON_NUM 1
 #define TOUCH_BUTTON_SENS 0.018F
 
 /* 触摸按钮句柄 */
@@ -36,14 +36,10 @@ static touch_button_handle_t button_handle[TOUCH_BUTTON_NUM];
 /* 触摸按钮通道数组 */
 static const touch_pad_t channel_array[TOUCH_BUTTON_NUM] = {
     TOUCH_PAD_NUM12,
-    TOUCH_PAD_NUM13,
-    TOUCH_PAD_NUM14,
 };
 
 /* 触摸按钮通道灵敏度数组 */
 static const float channel_sens_array[TOUCH_BUTTON_NUM] = {
-    TOUCH_BUTTON_SENS,
-    TOUCH_BUTTON_SENS,
     TOUCH_BUTTON_SENS,
 };
 

@@ -3,7 +3,7 @@
 
 #include <driver/gpio.h>
 
-#define RIGHT_LEG_PIN GPIO_NUM_12
+#define RIGHT_LEG_PIN GPIO_NUM_13
 #define RIGHT_FOOT_PIN GPIO_NUM_1
 #define LEFT_LEG_PIN GPIO_NUM_3
 #define LEFT_FOOT_PIN GPIO_NUM_14
