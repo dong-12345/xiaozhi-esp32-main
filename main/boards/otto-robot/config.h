@@ -139,6 +139,9 @@ constexpr HardwareConfig NON_CAMERA_VERSION_CONFIG = {
 #define LEDC_TIMER (LEDC_TIMER_0)
 #define LEDC_CHANNEL (LEDC_CHANNEL_0)
 
+
+
+/*
 #define LCD_TYPE_ST7789_SERIAL
 #define DISPLAY_WIDTH 240
 #define DISPLAY_HEIGHT 240
@@ -153,5 +156,8 @@ constexpr HardwareConfig NON_CAMERA_VERSION_CONFIG = {
 #define DISPLAY_SPI_MODE 3
 
 #define BOOT_BUTTON_GPIO GPIO_NUM_0
+*/
+
+
 
 #endif
