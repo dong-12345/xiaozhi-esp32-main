@@ -816,7 +816,6 @@ void LcdDisplay::SetupUI() {
     lv_obj_add_flag(preview_image_, LV_OBJ_FLAG_HIDDEN);
 
     /* Layer 1: Top bar - for status icons */
-    /*dong
     top_bar_ = lv_obj_create(screen);
     lv_obj_set_size(top_bar_, LV_HOR_RES, LV_SIZE_CONTENT);
     lv_obj_set_style_radius(top_bar_, 0, 0);
@@ -858,10 +857,8 @@ void LcdDisplay::SetupUI() {
     lv_obj_set_style_text_font(battery_label_, icon_font, 0);
     lv_obj_set_style_text_color(battery_label_, lvgl_theme->text_color(), 0);
     lv_obj_set_style_margin_left(battery_label_, lvgl_theme->spacing(2), 0);
-    */
 
     /* Layer 2: Status bar - for center text labels */
-    /*dong
     status_bar_ = lv_obj_create(screen);
     lv_obj_set_size(status_bar_, LV_HOR_RES, LV_SIZE_CONTENT);
     lv_obj_set_style_radius(status_bar_, 0, 0);
@@ -889,10 +886,8 @@ void LcdDisplay::SetupUI() {
     lv_obj_set_style_text_color(status_label_, lvgl_theme->text_color(), 0);
     lv_label_set_text(status_label_, Lang::Strings::INITIALIZING);
     lv_obj_align(status_label_, LV_ALIGN_CENTER, 0, 0);
-    */
 
     /* Top layer: Bottom bar - fixed at bottom, minimum height 48, height can be adaptive */
-    /*dong
     bottom_bar_ = lv_obj_create(screen);
     lv_obj_set_width(bottom_bar_, LV_HOR_RES);
     lv_obj_set_height(bottom_bar_, LV_SIZE_CONTENT);
@@ -906,10 +901,8 @@ void LcdDisplay::SetupUI() {
     lv_obj_set_style_pad_right(bottom_bar_, lvgl_theme->spacing(4), 0);
     lv_obj_set_style_border_width(bottom_bar_, 0, 0);
     lv_obj_align(bottom_bar_, LV_ALIGN_BOTTOM_MID, 0, 0);
-    */
 
     /* chat_message_label_ placed in bottom_bar_ and vertically centered */
-    /*dong
     chat_message_label_ = lv_label_create(bottom_bar_);
     lv_label_set_text(chat_message_label_, "");
     lv_obj_set_width(chat_message_label_, LV_HOR_RES - lvgl_theme->spacing(8)); // Subtract left and right padding
@@ -930,7 +923,6 @@ void LcdDisplay::SetupUI() {
     lv_obj_set_style_text_color(low_battery_label_, lv_color_white(), 0);
     lv_obj_center(low_battery_label_);
     lv_obj_add_flag(low_battery_popup_, LV_OBJ_FLAG_HIDDEN);
-    */
 }
 
 void LcdDisplay::SetPreviewImage(std::unique_ptr<LvglImage> image) {
@@ -1061,17 +1053,13 @@ void LcdDisplay::SetTheme(Theme* theme) {
     auto large_icon_font = lvgl_theme->large_icon_font()->font();
 
     if (text_font->line_height >= 40) {
-        /*dong
         lv_obj_set_style_text_font(mute_label_, large_icon_font, 0);
         lv_obj_set_style_text_font(battery_label_, large_icon_font, 0);
         lv_obj_set_style_text_font(network_label_, large_icon_font, 0);
-        */
     } else {
-        /*dong
         lv_obj_set_style_text_font(mute_label_, icon_font, 0);
         lv_obj_set_style_text_font(battery_label_, icon_font, 0);
         lv_obj_set_style_text_font(network_label_, icon_font, 0);
-        */
     }
 
     // Set parent text color
@@ -1093,14 +1081,12 @@ void LcdDisplay::SetTheme(Theme* theme) {
     }
     
     // Update status bar elements
-    /*dong
     lv_obj_set_style_text_color(network_label_, lvgl_theme->text_color(), 0);
     lv_obj_set_style_text_color(status_label_, lvgl_theme->text_color(), 0);
     lv_obj_set_style_text_color(notification_label_, lvgl_theme->text_color(), 0);
     lv_obj_set_style_text_color(mute_label_, lvgl_theme->text_color(), 0);
     lv_obj_set_style_text_color(battery_label_, lvgl_theme->text_color(), 0);
     lv_obj_set_style_text_color(emoji_label_, lvgl_theme->text_color(), 0);
-    */
 
     // If we have the chat message style, update all message bubbles
 #if CONFIG_USE_WECHAT_MESSAGE_STYLE
@@ -1189,7 +1175,7 @@ void LcdDisplay::SetTheme(Theme* theme) {
 #endif
     
     // Update low battery popup
-    //lv_obj_set_style_bg_color(low_battery_popup_, lvgl_theme->low_battery_color(), 0);//dong
+    lv_obj_set_style_bg_color(low_battery_popup_, lvgl_theme->low_battery_color(), 0);
 
     // No errors occurred. Save theme to settings
     Display::SetTheme(lvgl_theme);
